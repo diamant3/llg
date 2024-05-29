@@ -38,8 +38,8 @@ stage.on('mousedown touchstart', function (e) {
 });
 
 async function core() {
-    const worker = await createWorker("eng", 0);
-    const image = await stage.toImage();
+    const worker = await createWorker("eng", 1);
+    const image = await stage.toImage({ pixelRatio: 2 });
 
     const { data: { text } } = await worker.recognize(image);
     res.innerHTML = text;
