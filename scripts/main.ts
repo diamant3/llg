@@ -8,6 +8,7 @@ const height = window.innerHeight;
 const res = document.getElementById('result');
 const select = document.getElementById('tool');
 const eraseAll = document.getElementById('eraseAllBtn');
+const log = document.getElementById('log');
 
 const stage = new Konva.Stage({
     container: 'container',
@@ -38,7 +39,9 @@ stage.on('mousedown touchstart', function (e) {
 });
 
 async function core() {
-    const worker = await createWorker("eng", 1);
+    const worker = await createWorker("eng", 1, {
+        logger: l => log.innerHTML = `Job ID: ${l.jobId}\nProgress: ${l.progress}\nStatus: ${l.status}\nuserJobId: ${l.userJobId}\nworkerId: ${l.workerId}`,
+    });
     const image = await stage.toImage({ pixelRatio: 2 });
 
     const { data: { text } } = await worker.recognize(image);
