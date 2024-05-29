@@ -38,7 +38,7 @@ stage.on('mousedown touchstart', function (e) {
 });
 
 async function core() {
-    const worker = await createWorker("eng", 1);
+    const worker = await createWorker("eng", 0);
     const image = await stage.toImage();
 
     const { data: { text } } = await worker.recognize(image);
