@@ -5,6 +5,10 @@ import { createWorker } from "tesseract.js";
 const width = window.innerWidth;
 const height = window.innerHeight;
 
+const res = document.getElementById('result');
+const select = document.getElementById('tool');
+const eraseAll = document.getElementById('eraseAllBtn');
+
 const stage = new Konva.Stage({
     container: 'container',
     width: width,
@@ -12,13 +16,13 @@ const stage = new Konva.Stage({
 });
 
 const layer = new Konva.Layer();
-stage.add(layer);
 
 let isPaint = false;
 let mode = 'brush';
 let lastLine: Konva.Line;
 
 stage.on('mousedown touchstart', function (e) {
+    stage.add(layer);
     isPaint = true;
     let pos = stage.getPointerPosition();
     lastLine = new Konva.Line({
@@ -38,8 +42,6 @@ async function core() {
     const image = await stage.toImage();
 
     const { data: { text } } = await worker.recognize(image);
-    //console.log(text);
-    const res = document.getElementById('result');
     res.innerHTML = text;
     await worker.terminate();
 }
@@ -62,8 +64,11 @@ stage.on('mousemove touchmove', function (e) {
     lastLine.points(newPoints);
 });
 
-
-let select = document.getElementById('tool');
 select.addEventListener('change', function () {
     mode = select.value;
+});
+
+eraseAll.addEventListener('click', function () {
+    res.innerHTML = "";
+    layer.destroy();
 });
