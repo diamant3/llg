@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/diamant3/LLG.git"
+    "url": "git+https://github.com/diamant3/llg.git"
   },
   "author": "diamant3",
   "license": "MIT ",
   "bugs": {
-    "url": "https://github.com/diamant3/LLG/issues"
+    "url": "https://github.com/diamant3/llg/issues"
   },
-  "homepage": "https://github.com/diamant3/LLG#readme",
+  "homepage": "https://github.com/diamant3/llg#readme",
   "dependencies": {
     "konva": "^9.3.11",
     "tesseract.js": "^5.1.0",
