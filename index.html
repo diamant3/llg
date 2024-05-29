@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>Handwriting AI</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <style>
+            html, body {
+              margin: 0;
+              padding: 0;
+              background-color: 0x111111;
+              overflow: hidden;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h3>Tool:</h3>
+        <select id="tool">
+            <option value="brush">Brush</option>
+            <option value="eraser">Eraser</option>
+        </select>
+
+        <h3>OCR Result:</h3>
+        <textarea readonly id="result">
+        </textarea>
+
+        <div id="container"></div>
+    </body>
+
+    <script type="module" src="scripts/main.ts"></script>
+</html>

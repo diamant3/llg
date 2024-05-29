@@ -1,0 +1,25 @@
+{
+  "name": "llg",
+  "version": "1.0.0",
+  "description": "handwritten ai",
+  "type": "module",
+  "scripts": {
+    "start": "vite --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diamant3/LLG.git"
+  },
+  "author": "diamant3",
+  "license": "MIT ",
+  "bugs": {
+    "url": "https://github.com/diamant3/LLG/issues"
+  },
+  "homepage": "https://github.com/diamant3/LLG#readme",
+  "dependencies": {
+    "konva": "^9.3.11",
+    "tesseract.js": "^5.1.0",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.12"
+  }
+}
