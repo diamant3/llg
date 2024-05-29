@@ -13,10 +13,10 @@ jobs:
       with:
         node-version: 20
     - name: Install Dependencies
-      working-directory: ./dist
+      working-directory: ./.
       run: npm ci
     - name: Build llg
-      working-directory: ./dist
+      working-directory: ./.
       run: npm run build
     - name: Upload llg artifact
       uses: actions/upload-artifact@v4
