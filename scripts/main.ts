@@ -8,7 +8,6 @@ const height = window.innerHeight;
 const res = document.getElementById('result');
 const select = document.getElementById('tool');
 const eraseAll = document.getElementById('eraseAllBtn');
-const log = document.getElementById('log');
 
 const stage = new Konva.Stage({
     container: 'container',
@@ -18,8 +17,8 @@ const stage = new Konva.Stage({
 
 const layer = new Konva.Layer();
 
-let isPaint = false;
-let mode = 'brush';
+let isPaint: boolean = false;
+let mode: string = 'brush';
 let lastLine: Konva.Line;
 
 stage.on('mousedown touchstart', function (e) {
@@ -38,21 +37,8 @@ stage.on('mousedown touchstart', function (e) {
     layer.add(lastLine);
 });
 
-async function core() {
-    //const worker = await createWorker("eng", 1, {
-    //    logger: l => log.innerHTML = `Job ID: ${l.jobId}\nProgress: ${l.progress}\nStatus: ${l.status}\nuserJobId: ${l.userJobId}\nworkerId: ${l.workerId}`,
-    //});
-    const worker = await createWorker("eng", 1);
-    const image = await stage.toImage({ pixelRatio: 2 });
-
-    const { data: { text } } = await worker.recognize(image);
-    res.innerHTML = text;
-    await worker.terminate();
-}
-
 stage.on('mouseup touchend', function () {
     isPaint = false;
-
     core();
 });
 
@@ -76,3 +62,14 @@ eraseAll.addEventListener('click', function () {
     res.innerHTML = "";
     layer.destroy();
 });
+
+let core = async () => {
+    const worker = await createWorker("eng", 1);
+    const image = await stage.toImage({ pixelRatio: 2 });
+
+    const { data: { text } } = await worker.recognize(image);
+    if (res) {
+        res.innerHTML = text;
+    }
+    await worker.terminate();
+};
