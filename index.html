@@ -2,7 +2,7 @@
 
 <html lang="en">
     <head>
-        <title>Handwriting AI</title>
+        <title>llg - handwriting detection</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <style>
@@ -12,10 +12,29 @@
               background-color: 0x111111;
               overflow: hidden;
             }
+
+            #panel {
+                width: 20%;
+                height: 100%;
+                background-color: #049be3;   
+                text-align: center; 
+                position: fixed;
+                top: 0;
+                padding-top: 20px;
+                left: 0;  
+            }
+
+            #container {
+                right: 0;
+                position: fixed;
+                width: 80%;
+            }
         </style>
     </head>
 
     <body>
+        <div id="panel">
+            <h1>Little Letter Game</h1>
         <h3>Tool:</h3>
         <select id="tool">
             <option value="brush">Brush</option>
@@ -23,8 +42,9 @@
         </select>
 
         <h3>OCR Result:</h3>
-        <textarea readonly id="result">
+        <textarea rows="5" readonly id="result">
         </textarea>
+        </div>
 
         <div id="container"></div>
     </body>

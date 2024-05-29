@@ -3,7 +3,7 @@ import Konva from "konva";
 import { createWorker } from "tesseract.js";
 
 const width = window.innerWidth;
-const height = window.innerHeight - 25;
+const height = window.innerHeight;
 
 const stage = new Konva.Stage({
     container: 'container',
@@ -23,7 +23,7 @@ stage.on('mousedown touchstart', function (e) {
     let pos = stage.getPointerPosition();
     lastLine = new Konva.Line({
         stroke: '#000000',
-        strokeWidth: 10,
+        strokeWidth: 12,
         globalCompositeOperation: mode === 'brush' ? 'source-over' : 'destination-out',
         lineCap: 'round',
         lineJoin: 'round',
