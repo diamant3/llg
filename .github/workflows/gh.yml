@@ -1,5 +1,4 @@
-name: Build llg
-
+name: Build llg app
 on:
   push:
     branches: [ '**' ]
