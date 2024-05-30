@@ -9,8 +9,6 @@ const res = document.getElementById('result');
 const select = document.getElementById('tool');
 const eraseAll = document.getElementById('eraseAllBtn');
 
-const scheduler = createScheduler();
-
 const stage = new Konva.Stage({
     container: 'container',
     width: width,
@@ -18,13 +16,13 @@ const stage = new Konva.Stage({
 });
 
 const layer = new Konva.Layer();
+stage.add(layer);
 
 let isPaint: boolean = false;
 let mode: string = 'brush';
 let lastLine: Konva.Line;
 
 stage.on('mousedown touchstart', function (e) {
-    stage.add(layer);
     isPaint = true;
     let pos = stage.getPointerPosition();
     lastLine = new Konva.Line({
@@ -37,7 +35,11 @@ stage.on('mousedown touchstart', function (e) {
     });
 
     layer.add(lastLine);
+});
 
+stage.on('mouseup touchend', function () {
+    isPaint = false;
+    
     const gs_image = new Konva.Image({
         image: stage.toCanvas(),
         draggable: false,
@@ -46,11 +48,14 @@ stage.on('mousedown touchstart', function (e) {
     gs_image.filters([Konva.Filters.Grayscale]);
 
     layer.add(gs_image);
-});
 
-stage.on('mouseup touchend', function () {
-    isPaint = false;
-    core();
+    (async () => {
+        const image = await stage.toImage();
+        const worker = await createWorker('eng');
+        const ret = await worker.recognize(image);
+        res.innerHTML = ret.data.text;
+        await worker.terminate();
+    })();
 });
 
 stage.on('mousemove touchmove', function (e) {
@@ -71,27 +76,5 @@ select.addEventListener('change', function () {
 
 eraseAll.addEventListener('click', function () {
     res.innerHTML = "";
-    layer.destroy();
+    layer.destroyChildren();
 });
-
-const workerGen = async () => {
-    const worker = await createWorker('eng', 1);
-    scheduler.addWorker(worker);
-}
-
-const core = async () => {
-    const workerN = 4;
-    const workerArr = Array(workerN);
-    const recogJob = 20;
-    const image = await stage.toImage({ width: width, height: height });
-
-    for (let worker = 0; worker < workerN; worker++) {
-        workerArr[worker] = workerGen();
-    }
-    await Promise.all(workerArr);
-
-    await Promise.all(Array(recogJob).fill(0).map(() => (
-        scheduler.addJob('recognize', image).then((result) => res.innerHTML = result.data.text)
-    )))
-    await scheduler.terminate();
-};
