@@ -35,6 +35,15 @@ stage.on('mousedown touchstart', function (e) {
     });
 
     layer.add(lastLine);
+
+    const gs_image = new Konva.Image({
+        image: stage.toCanvas(),
+        draggable: false,
+    });
+    gs_image.cache({ imageSmoothingEnabled: true });
+    gs_image.filters([Konva.Filters.Grayscale]);
+
+    layer.add(gs_image);
 });
 
 stage.on('mouseup touchend', function () {
