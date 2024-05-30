@@ -1,6 +1,6 @@
 import Konva from "konva";
 
-import { createWorker } from "tesseract.js";
+import { createWorker, createScheduler } from "tesseract.js";
 
 const width = window.innerWidth;
 const height = window.innerHeight;
@@ -8,6 +8,8 @@ const height = window.innerHeight;
 const res = document.getElementById('result');
 const select = document.getElementById('tool');
 const eraseAll = document.getElementById('eraseAllBtn');
+
+const scheduler = createScheduler();
 
 const stage = new Konva.Stage({
     container: 'container',
@@ -40,7 +42,7 @@ stage.on('mousedown touchstart', function (e) {
         image: stage.toCanvas(),
         draggable: false,
     });
-    gs_image.cache({ imageSmoothingEnabled: true });
+    gs_image.cache();
     gs_image.filters([Konva.Filters.Grayscale]);
 
     layer.add(gs_image);
@@ -72,13 +74,24 @@ eraseAll.addEventListener('click', function () {
     layer.destroy();
 });
 
-let core = async () => {
-    const worker = await createWorker("eng", 1);
+const workerGen = async () => {
+    const worker = await createWorker('eng');
+    scheduler.addWorker(worker);
+}
+
+const core = async () => {
+    const workerN = 4;
+    const workerArr = Array(workerN);
+    const recogJob = 20;
     const image = await stage.toImage({ pixelRatio: 2 });
 
-    const { data: { text } } = await worker.recognize(image);
-    if (res) {
-        res.innerHTML = text;
+    for (let worker = 0; worker < workerN; worker++) {
+        workerArr[worker] = workerGen();
     }
-    await worker.terminate();
+    await Promise.all(workerArr);
+
+    await Promise.all(Array(recogJob).fill(0).map(() => (
+        scheduler.addJob('recognize', image).then((result) => res.innerHTML = result.data.text)
+    )))
+    await scheduler.terminate();
 };
