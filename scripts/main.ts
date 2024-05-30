@@ -29,7 +29,7 @@ stage.on('mousedown touchstart', function (e) {
     let pos = stage.getPointerPosition();
     lastLine = new Konva.Line({
         stroke: '#000000',
-        strokeWidth: 12,
+        strokeWidth: 14,
         globalCompositeOperation: mode === 'brush' ? 'source-over' : 'destination-out',
         lineCap: 'round',
         lineJoin: 'round',
@@ -75,7 +75,7 @@ eraseAll.addEventListener('click', function () {
 });
 
 const workerGen = async () => {
-    const worker = await createWorker('eng');
+    const worker = await createWorker('eng', 1);
     scheduler.addWorker(worker);
 }
 
@@ -83,7 +83,7 @@ const core = async () => {
     const workerN = 4;
     const workerArr = Array(workerN);
     const recogJob = 20;
-    const image = await stage.toImage({ pixelRatio: 2 });
+    const image = await stage.toImage({ width: width, height: height });
 
     for (let worker = 0; worker < workerN; worker++) {
         workerArr[worker] = workerGen();
