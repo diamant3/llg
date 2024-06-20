@@ -40,14 +40,15 @@ stage.on('mousedown touchstart', function (e) {
 stage.on('mouseup touchend', function () {
     isPaint = false;
     
-    const gs_image = new Konva.Image({
-        image: stage.toCanvas(),
-        draggable: false,
-    });
-    gs_image.cache();
-    gs_image.filters([Konva.Filters.Grayscale]);
+    // disable grayscale conversion
+    // const gs_image = new Konva.Image({
+    //     image: stage.toCanvas(),
+    //     draggable: false,
+    // });
+    // gs_image.cache();
+    // gs_image.filters([Konva.Filters.Grayscale]);
 
-    layer.add(gs_image);
+    // layer.add(gs_image);
 
     (async () => {
         const image = await stage.toImage();
